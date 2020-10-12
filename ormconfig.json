@@ -3,9 +3,9 @@
     "type": "postgres",
     "host": "localhost",
     "port": 5432,
-    "username": "postgres",
-    "password": "postgres",
-    "database": "typegraphql-example",
+    "username": "typegraphql",
+    "password": "typegraphql",
+    "database": "blog-typeGQ",
     "synchronize": true,
     "logging": true,
     "entities": ["src/entity/*.*"]
