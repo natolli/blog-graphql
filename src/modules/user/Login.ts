@@ -26,6 +26,10 @@ export class LoginResolver{
             return null
         }
 
+        if(!user.confirmed){
+            throw new Error('User must confirm email')
+        }
+
         ctx.req.session!.userId =  user.id
         
 

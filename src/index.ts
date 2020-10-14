@@ -6,6 +6,7 @@ import { createConnection } from "typeorm";
 import { RegisterResolver } from "./modules/user/Register";
 import {LoginResolver} from './modules/user/Login'
 import { MeResolver } from "./modules/user/Me";
+import {ConfirmUserResolver} from './modules/user/ConfirmUser'
 import session from 'express-session'
 import {redis} from './redis'
 import connectRedis from 'connect-redis'
@@ -16,7 +17,7 @@ const main =async () =>{
     await createConnection();
 
     const schema = await buildSchema({
-        resolvers:[MeResolver,LoginResolver,RegisterResolver]
+        resolvers:[MeResolver,LoginResolver,RegisterResolver,ConfirmUserResolver]
     })
 
     const apolloServer = new ApolloServer({schema,
@@ -53,7 +54,10 @@ const main =async () =>{
 
     apolloServer.applyMiddleware({app})
 
-    app.listen(4000, ()=>console.log('server started on 4000'))
+    app.listen(4000, ()=>{
+        console.log('server started on 4000')
+        
+    })
 }
 
 main();
