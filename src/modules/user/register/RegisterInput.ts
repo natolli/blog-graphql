@@ -1,9 +1,10 @@
 import { IsEmail, Length } from "class-validator";
 import { Field, InputType } from "type-graphql";
 import { IsEmailAlreadyExist } from "./emailAlreadyExists";
+import { PasswordInput } from '../../shared/PasswordInput';
 
 @InputType()
-export class RegisterInput{
+export class RegisterInput extends PasswordInput{
     
     @Field()
     @Length(1,255)
@@ -17,7 +18,4 @@ export class RegisterInput{
     @IsEmail()
     @IsEmailAlreadyExist({message:'Email is already used'})
     email : string;
-
-    @Field()
-    password : string;
 }
