@@ -5,7 +5,7 @@ import { PasswordInput } from '../../shared/PasswordInput';
 @InputType()
 export class ChangePasswordInput extends PasswordInput{
     
-    @Field()
+    @Field() 
     token: string
 
 }
