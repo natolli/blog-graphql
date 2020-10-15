@@ -1,15 +1,24 @@
-import {Arg, Mutation, Resolver, Query} from 'type-graphql'
+import {Arg, Mutation, Resolver, Query, Ctx, UseMiddleware} from 'type-graphql'
 import { User } from  '../../entity/User';
 import { RegisterInput } from './register/RegisterInput';
 import bcrypt from 'bcryptjs';
 import {sendEmail} from '../utils/sendEmail'
 import {createConfirmationUrl} from '../utils/createConfirmationURL'
+import { MyContext } from  '../../types/MyContext';
+import { isAuth } from  '../middleware/isAuth';
 @Resolver()
 export class RegisterResolver{
 
+    @UseMiddleware(isAuth)
     @Query(()=>String)
-    hello(): string{
-        return 'Hello'
+    async hello(
+        @Ctx() ctx: MyContext
+    ): Promise<string>{
+
+        const user = await User.findOne(ctx.req.session!.userId)
+        
+
+        return `Hello, ${user!.firstName}`
     }
     
     @Mutation(()=> User)
