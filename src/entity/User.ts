@@ -1,5 +1,7 @@
 import { Field, ID, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Post} from './Post'
+
 
 @ObjectType()
 @Entity()
@@ -26,4 +28,7 @@ export class User extends BaseEntity{
 
     @Column('bool', {default:false})
     confirmed: boolean
+
+    @OneToMany(()=>Post, post=>post.user)
+    posts: Post
 }

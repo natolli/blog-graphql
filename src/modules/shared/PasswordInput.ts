@@ -1,4 +1,3 @@
-import { Min } from "class-validator";
 import { Field, InputType } from "type-graphql";
 
 
@@ -6,7 +5,6 @@ import { Field, InputType } from "type-graphql";
 export class PasswordInput{
     
     @Field()
-    @Min(5)
     password : string;
 
 }
