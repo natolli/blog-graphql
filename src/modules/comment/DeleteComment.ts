@@ -1,10 +1,10 @@
 import {  Resolver,Mutation,Arg, UseMiddleware, Ctx, Int } from "type-graphql";
-import { Post } from '../../entity/Post';
 import { isAuth } from  '../middleware/isAuth';
 import { MyContext } from  '../../types/MyContext';
 import { Comment } from  '../../entity/Comment';
+
 @Resolver()
-export class DeletePostRsolver{
+export class DeleteCommentRsolver{
 
     
     @UseMiddleware(isAuth)
@@ -14,20 +14,17 @@ export class DeletePostRsolver{
         @Ctx() ctx: MyContext
     ): Promise<Boolean>{
 
-        const post = await Post.findOne(id)
+        const comment = await Comment.findOne(id)
         
-        if(!post){
+        if(!comment){
             return false
         }
         
-        if(post.userId !== ctx.req.session!.userId){
+        if(comment.userId !== ctx.req.session!.userId){
             throw new Error('Not Authorized')
         }
 
-        await Comment.delete({postId: id})
-
-        await Post.delete({id})
-
+        await Comment.delete({id})
 
         return true
         

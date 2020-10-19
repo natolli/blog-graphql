@@ -1,7 +1,7 @@
 import { Field, ID, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import {Post} from './Post'
-
+import { Comment } from  './Comment';
 
 @ObjectType()
 @Entity()
@@ -31,4 +31,7 @@ export class User extends BaseEntity{
 
     @OneToMany(()=>Post, post=>post.user)
     posts: Post
+
+    @OneToMany(()=>Comment, comment=>comment.user)
+    comments: Comment
 }
