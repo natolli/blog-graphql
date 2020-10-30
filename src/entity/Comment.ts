@@ -28,10 +28,11 @@ export class Comment extends BaseEntity {
     @Column()
     postId: number;
 
-
+    @Field(()=>User)
     @ManyToOne(() => User, user => user.posts)
     user: User;
 
+    @Field(()=>Post)
     @ManyToOne(() => Post, post => post.comments)
     post: Post;
 

@@ -1,8 +1,10 @@
-import {  Resolver, UseMiddleware, Query, Arg, Int } from "type-graphql";
+import {  Resolver, UseMiddleware, Query, Arg, Int, FieldResolver, Root } from "type-graphql";
 import { Post } from '../../entity/Post';
 import { isAuth } from  '../middleware/isAuth';
+import { User } from '../../entity/User';
+import { Comment } from '../../entity/Comment';
 
-@Resolver()
+@Resolver(Post)
 export class PostsRsolver{
 
     
@@ -21,5 +23,22 @@ export class PostsRsolver{
         return posts
     }
 
+    @FieldResolver(()=>User)
+    async user(@Root() parent:Post): Promise<User>{
+        const user =  await User.findOne({id: parent.userId})
+        if(!user){
+            throw new Error('User not found')
+        }
+        return user   
+    }
+
+    @FieldResolver(()=>[Comment])
+    async comments(
+        @Root() parent:Post
+    ){
+        const comments = await Comment.find({postId: parent.id})
+    
+        return comments
+    }
 
 }
