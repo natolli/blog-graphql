@@ -12,6 +12,10 @@ export class CreatePostRsolver {
     @Arg("input") { title, description, topics }: CreatePostInput,
     @Ctx() ctx: MyContext
   ): Promise<Post> {
+    if (topics.length > 3) {
+      throw new Error("Maxmium of 3 topics is allowed");
+    }
+
     const post = await Post.create({
       title,
       description,

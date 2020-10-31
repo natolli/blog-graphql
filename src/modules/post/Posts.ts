@@ -12,21 +12,77 @@ import { isAuth } from "../middleware/isAuth";
 import { User } from "../../entity/User";
 import { Comment } from "../../entity/Comment";
 import { Topic } from "./topic/TopicEnum";
+import { trimDescription } from "./posts/trimDescription";
+import { PaginatedPosts } from "./posts/PaginatedPosts";
+import { getConnection } from "typeorm";
 
 @Resolver(Post)
 export class PostsRsolver {
+  @FieldResolver(() => String)
+  textSnippet(@Root() post: Post) {
+    return trimDescription(post.description);
+  }
+
   @UseMiddleware(isAuth)
-  @Query(() => [Post])
+  @Query(() => PaginatedPosts)
   async posts(
-    @Arg("id", () => Int, { nullable: true }) id: number
-  ): Promise<Post[]> {
-    if (id) {
-      return await Post.find({ userId: id });
+    @Arg("limit", () => Int) limit: number,
+    @Arg("cursor", () => String, { nullable: true }) cursor: string | null
+  ): Promise<PaginatedPosts> {
+    const realLimit = Math.min(50, limit);
+    const reaLimitPlusOne = realLimit + 1;
+
+    const qb = getConnection()
+      .getRepository(Post)
+      .createQueryBuilder("p")
+      .orderBy('p."createdAt"', "DESC")
+      .take(reaLimitPlusOne);
+
+    if (cursor) {
+      qb.where('p."createdAt" < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
     }
 
-    const posts = await Post.find();
+    const posts = await qb.getMany();
+    console.log("posts: ", posts);
 
-    return posts;
+    return {
+      posts: posts.slice(0, realLimit),
+      hasMore: posts.length === reaLimitPlusOne,
+    };
+  }
+
+  @UseMiddleware(isAuth)
+  @Query(() => PaginatedPosts)
+  async getUserPosts(
+    @Arg("id", () => Int) id: number,
+    @Arg("limit", () => Int) limit: number,
+    @Arg("cursor", () => String, { nullable: true }) cursor: string | null
+  ) {
+    const realLimit = Math.min(50, limit);
+    const reaLimitPlusOne = realLimit + 1;
+
+    const qb = getConnection()
+      .getRepository(Post)
+      .createQueryBuilder("p")
+      .where('p."userId" = :userId', { userId: id })
+      .orderBy('p."createdAt"', "DESC")
+      .take(reaLimitPlusOne);
+
+    if (cursor) {
+      qb.where('p."createdAt" < :cursor', {
+        cursor: new Date(parseInt(cursor)),
+      });
+    }
+
+    const posts = await qb.getMany();
+    console.log("posts: ", posts);
+
+    return {
+      posts: posts.slice(0, realLimit),
+      hasMore: posts.length === reaLimitPlusOne,
+    };
   }
 
   @UseMiddleware(isAuth)
