@@ -11,7 +11,7 @@ import {
 import { User } from "./User";
 import { Comment } from "./Comment";
 import { Upvote } from "./Upvote";
-
+import { Topic } from "../modules/post/topic/TopicEnum";
 @ObjectType()
 @Entity()
 export class Post extends BaseEntity {
@@ -34,6 +34,10 @@ export class Post extends BaseEntity {
   @Field()
   @Column({ type: "int", default: 0 })
   points: number;
+
+  @Field(() => [Topic])
+  @Column("text", { array: true, nullable: true })
+  topics: string[];
 
   @Field()
   @Column()
