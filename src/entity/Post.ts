@@ -39,6 +39,10 @@ export class Post extends BaseEntity {
   @Column("text", { array: true, nullable: true })
   topics: string[];
 
+  @Field(() => String, { nullable: true })
+  @Column("text", { nullable: true })
+  imageName: string;
+
   @Field()
   @Column()
   userId: number;

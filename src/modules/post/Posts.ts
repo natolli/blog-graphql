@@ -15,6 +15,7 @@ import { Topic } from "./topic/TopicEnum";
 import { trimDescription } from "./posts/trimDescription";
 import { PaginatedPosts } from "./posts/PaginatedPosts";
 import { getConnection } from "typeorm";
+import { cloudinary } from "../utils/cloudnary";
 
 @Resolver(Post)
 export class PostsRsolver {
@@ -106,6 +107,11 @@ export class PostsRsolver {
       throw new Error("User not found");
     }
     return user;
+  }
+
+  @FieldResolver(() => User)
+  async image(@Root() parent: Post) {
+    return cloudinary.v2.image(parent.imageName);
   }
 
   @FieldResolver(() => [Comment])
