@@ -4,6 +4,8 @@ import { isAuth } from "../middleware/isAuth";
 import { MyContext } from "../../types/MyContext";
 import { Comment } from "../../entity/Comment";
 import { Upvote } from "../../entity/Upvote";
+import { cloudinary } from "../utils/cloudnary";
+
 @Resolver()
 export class DeletePostRsolver {
   @UseMiddleware(isAuth)
@@ -25,6 +27,8 @@ export class DeletePostRsolver {
     await Upvote.delete({ postId: id });
 
     await Comment.delete({ postId: id });
+
+    await cloudinary.v2.uploader.destroy(post.imageName);
 
     await Post.delete({ id });
 

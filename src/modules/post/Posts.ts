@@ -100,6 +100,16 @@ export class PostsRsolver {
     return filtredPosts;
   }
 
+  @UseMiddleware(isAuth)
+  @Query(() => Post)
+  async getSinglePost(
+    @Arg("postId", () => Int, { nullable: true }) postId: number
+  ): Promise<Post | undefined> {
+    const post = await Post.findOne({ where: { id: postId } });
+
+    return post;
+  }
+
   @FieldResolver(() => User)
   async user(@Root() parent: Post): Promise<User> {
     const user = await User.findOne({ id: parent.userId });

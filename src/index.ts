@@ -30,14 +30,14 @@ const main = async () => {
       origin: "http://localhost:3000",
     })
   );
-  const redisSecret = process.env.SESSION_SCERET
-    ? process.env.SESSION_SCERET
-    : "hello";
+  const redisSecret = "hello";
+
   app.use(
     session({
       store: new RedisStore({
         client: redis as any,
       }),
+
       name: "qid",
       secret: redisSecret,
       resave: false,
@@ -50,7 +50,11 @@ const main = async () => {
     })
   );
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: false,
+    bodyParserConfig: { limit: "50mb" },
+  });
 
   app.listen(4000, () => {
     console.log("server started on 4000");

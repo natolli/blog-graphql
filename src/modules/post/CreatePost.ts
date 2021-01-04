@@ -20,12 +20,15 @@ export class CreatePostRsolver {
       throw new Error("Maxmium of 3 topics is allowed");
     }
 
-    cloudinary.v2.uploader.upload(
+    const croppedFileName = filename.split(".").slice(0, -1).join(".");
+
+    await cloudinary.v2.uploader.upload_large(
       file,
-      { public_id: filename },
+
+      { public_id: croppedFileName, timeout: 600000 },
       (err, result) => {
         if (err) {
-          throw new Error("Image wasnt uploded: " + err);
+          throw new Error(err.message);
         }
         console.log(result);
       }
@@ -36,7 +39,7 @@ export class CreatePostRsolver {
       description,
       topics,
       userId: ctx.req.session!.userId,
-      imageName: filename,
+      imageName: croppedFileName,
     }).save();
 
     return post;
