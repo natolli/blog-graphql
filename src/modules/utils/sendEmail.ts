@@ -1,27 +1,26 @@
 import nodemailer from "nodemailer";
 
 export async function sendEmail(email: string, url: string) {
-  const testAccount = await nodemailer.createTestAccount();
-
   const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    secure: false,
+    service: "gmail",
     auth: {
-      user: testAccount.user,
-      pass: testAccount.pass,
+      user: process.env.GMAIL_USERNAME,
+      pass: process.env.GMAIL_PASSWORD,
     },
   });
 
-  const info = await transporter.sendMail({
+  let mailOptions = {
     from: '"DEEP " <natolilemma1@example.com>',
     to: email,
-    subject: "Hello ✔",
-    text: "Hello world?",
+    subject: "Confirm email or change password (DEEP)",
+    text: "Hello, ",
     html: `<a href="${url}">${url}</a>`,
+  };
+
+  transporter.sendMail(mailOptions, (err, data) => {
+    if (err) {
+      console.log(err);
+    }
+    console.log(data);
   });
-
-  console.log("Message sent: %s", info.messageId);
-
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
 }

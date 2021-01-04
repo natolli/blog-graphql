@@ -62,3 +62,4 @@ const main = async () => {
 };
 
 main();
+console.log(process.env.GMAIL_EMAIL);
