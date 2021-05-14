@@ -1,0 +1,1 @@
+{"version":3,"file":"trimDescription.js","sourceRoot":"","sources":["../../../../src/modules/post/posts/trimDescription.ts"],"names":[],"mappings":";;;AAAa,QAAA,eAAe,GAAG,CAAC,WAAmB,EAAE,EAAE;IACrD,IAAI,WAAW,CAAC,MAAM,IAAI,EAAE,EAAE;QAC5B,OAAO,WAAW,CAAC;KACpB;IACD,MAAM,YAAY,GAAW,WAAW,CAAC,KAAK,CAAC,CAAC,EAAE,EAAE,CAAC,CAAC;IAEtD,OAAO,GAAG,YAAY,KAAK,CAAC;AAC9B,CAAC,CAAC"}

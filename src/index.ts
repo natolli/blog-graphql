@@ -12,7 +12,7 @@ const main = async () => {
   await createConnection();
 
   const schema = await buildSchema({
-    resolvers: [__dirname + "/modules/**/*.ts"],
+    resolvers: [__dirname + "/modules/**/*.js"],
   });
 
   const apolloServer = new ApolloServer({
@@ -56,10 +56,11 @@ const main = async () => {
     bodyParserConfig: { limit: "50mb" },
   });
 
-  app.listen(4000, () => {
-    console.log("server started on 4000");
+  const PORT = process.env.PORT || 5000;
+
+  app.listen(PORT, () => {
+    console.log(`server started at ${PORT}`);
   });
 };
 
 main();
-console.log(process.env.GMAIL_EMAIL);

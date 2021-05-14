@@ -1,12 +1,15 @@
 {
   "name": "default",
   "type": "postgres",
-  "host": "localhost",
+  "host": "ec2-52-44-46-66.compute-1.amazonaws.com",
   "port": 5432,
-  "username": "typegraphql",
-  "password": "typegraphql",
-  "database": "blog-typeGQ",
+  "username": "hmswmpubdafslp",
+  "password": "99ba63e3d2eec5af55d0281072aaf0144c71709935a6ce98290ade1ebae495da",
+  "database": "deo3jjj40e7oab",
+  "ssl": {
+    "rejectUnauthorized": false
+  },
   "synchronize": true,
   "logging": true,
-  "entities": ["src/entity/*.*"]
+  "entities": ["dist/entity/*.*"]
 }
